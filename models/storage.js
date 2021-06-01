@@ -12,13 +12,13 @@ let data = {};
 */
 
 async function init() {
-    try{
+    try {
         data = JSON.parse(await fs.readFile('./models/data.json'))
-    }catch(err){
+    } catch (err) {
         console.error('Error reading database');
     }
 
-    return (req,res,next) => {
+    return (req, res, next) => {
         req.storage = {
             getAll,
             getById,
@@ -28,21 +28,35 @@ async function init() {
     }
 }
 
-async function getAll() {
-    return Object.entries(data)
+async function getAll(query) {
+    let cubes = Object.entries(data)
         .map(([id, v]) => Object.assign({}, { id }, v));
+
+    if (query.search) {
+        cubes = cubes.filter(c => c.name.toLowerCase().includes(query.search.toLowerCase()));
+    }
+    if (query.from) {
+        cubes = cubes.filter(c => c.difficulty >= Number(query.from));
+    }
+    if (query.to) {
+        cubes = cubes.filter(c => c.difficulty <= Number(query.to));
+    }
+
+
+    return cubes;
+
 }
 
-async function getById(id){
+async function getById(id) {
     return data[id];
 }
 
-async function create(cube){
+async function create(cube) {
     const id = uniqid();
     data[id] = cube;
-    try{
-       await fs.writeFile('./models/data.json', JSON.stringify(data, null, 2));
-    }catch(err){
+    try {
+        await fs.writeFile('./models/data.json', JSON.stringify(data, null, 2));
+    } catch (err) {
         console.error('Error writing DataBase')
     }
 }

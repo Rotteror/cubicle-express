@@ -1,0 +1,11 @@
+[x] initialize express app
+[x] setup handlers
+[x] setup static files
+[x] setup storage middleware
+[x] set route handlers (controller action)
+
+
+## Languages
+* Javascript, HTML, CSS
+* Express, express-handlebars, uniqid, body-parser
+* GitHub

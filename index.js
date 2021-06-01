@@ -9,6 +9,7 @@ const { catalog } = require('./controllers/catalog');
 const { create, post } = require('./controllers/create');
 const { details } = require('./controllers/details');
 const { notFound } = require('./controllers/notFound');
+const { edit, post: editPost } = require('./controllers/edit');
 
 start();
 
@@ -22,7 +23,7 @@ async function start() {
     }));
     app.set('view engine', 'hbs');
     app.use('/static', express.static('static'));
-    app.use(express.urlencoded({extended: false}))
+    app.use(express.urlencoded({ extended: false }))
     app.use(await storage());
 
     app.get('/', catalog)
@@ -30,6 +31,9 @@ async function start() {
     app.get('/details/:id', details)
     app.get('/create', create)
     app.post('/create', post)
+    app.get('/edit/:id', edit)
+    app.post('/edit/:id', editPost)
+    
 
     app.all('*', notFound)
 

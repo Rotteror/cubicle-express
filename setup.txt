@@ -1,4 +1,5 @@
 [x] initialize express app
+[x] no authentication, all users have access to CRUD operations
 [x] setup handlers
 [x] setup static files
 [x] setup storage middleware

@@ -22,7 +22,8 @@ async function init() {
         req.storage = {
             getAll,
             getById,
-            create
+            create,
+            edit
         };
         next()
     }
@@ -48,7 +49,12 @@ async function getAll(query) {
 }
 
 async function getById(id) {
-    return data[id];
+    const cube = data[id];
+    if (cube) {
+        return Object.assign({}, { id }, cube)
+    } else {
+        return undefined
+    }
 }
 
 async function create(cube) {
@@ -61,9 +67,19 @@ async function create(cube) {
     }
 }
 
+async function edit(id, cube) {
+    data[id] = cube;
+    try {
+        await fs.writeFile('./models/data.json', JSON.stringify(data, null, 2));
+    } catch (err) {
+        console.error('Error writing DataBase')
+    }
+}
+
 module.exports = {
     init,
     getAll,
     getById,
-    create
+    create,
+    edit
 }

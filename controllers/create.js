@@ -9,8 +9,14 @@ module.exports = {
             imageUrl: req.body.imageUrl,
             difficulty: Number(req.body.difficulty)
         }
+        try {
+            await req.storage.create(cube);
+        } catch (err) {
+           if(err.name == 'ValidationError'){
+               return res.render('create', {title: 'Create cube', error: 'All fields are required!'})
+           }
+        }
 
-        await req.storage.create(cube);
         res.redirect('/')
     }
 }

@@ -36,7 +36,6 @@ async function getAll(query) {
     if (query.to) {
         options.difficulty = options.difficulty || {};
         options.difficulty.$lte = Number(query.to);
-
         //cubes = cubes.filter(c => c.difficulty <= Number(query.to));
     }
 

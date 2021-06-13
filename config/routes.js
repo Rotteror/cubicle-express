@@ -5,6 +5,8 @@ const accessoryController = require('../controllers/accessoryController');
 const homeController = require('../controllers/homeController');
 const authController = require('../controllers/authController');
 
+const { isAuth } = require('../middlewares/guards')
+
 module.exports = (app) => {
 
     app.use('/products', productController);
@@ -12,7 +14,7 @@ module.exports = (app) => {
     app.user('/auth', authController);
 
 
-    app.post('/comments/:cubeId/create', commentPost);
+    app.post('/comments/:cubeId/create', isAuth(), commentPost);
 
     app.use('/', homeController)
 }

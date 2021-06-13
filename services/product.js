@@ -7,16 +7,13 @@ async function getAll(query) {
     const options = {};
     if (query.search) {
         options.name = { $regex: query.search, $options: 'i' };
-        //cubes = cubes.filter(c => c.name.toLowerCase().includes(query.search.toLowerCase()));
     }
     if (query.from) {
         options.difficulty = { $gte: Number(query.from) };
-        //cubes = cubes.filter(c => c.difficulty >= Number(query.from));
     }
     if (query.to) {
         options.difficulty = options.difficulty || {};
         options.difficulty.$lte = Number(query.to);
-        //cubes = cubes.filter(c => c.difficulty <= Number(query.to));
     }
 
     let cubes = Cube.find({}).lean();
@@ -26,9 +23,25 @@ async function getAll(query) {
 }
 
 async function getById(id) {
-    const cube = await Cube.findById(id).populate('comments').populate('accessories').lean();
+    const cube = await Cube.findById(id)
+    .populate('comments')
+    .populate('accessories')
+    .populate('author')
+    .lean(); //toObject
+
     if (cube) {
-        return cube;
+        const viewModel = {
+            _id: cube._id,
+            name: cube.name,
+            description: cube.description,
+            imageUrl: cube.imageUrl,
+            difficulty: cube.difficulty,
+            comments: cube.comments,
+            accessories: cube.accessories,
+            author: cube.author && cube.author.username,
+            authorId: cube.author && cube.author._id,
+        };
+        return viewModel;
     } else {
         return undefined;
     }

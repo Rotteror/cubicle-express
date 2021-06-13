@@ -19,8 +19,5 @@ async function start() {
     app.use(await storage());
     routesConfig(app);
 
-
-
-
     app.listen(port, () => console.log(`Server listening on port ${port}`));
 }

@@ -71,14 +71,18 @@ router.post('/edit/:id', async (req, res) => {
         imageUrl: req.body.imageUrl,
         difficulty: Number(req.body.difficulty)
     }
+    try {
+        await req.storage.edit(req.params.id, cube);
+        res.redirect('/')
+    } catch (err) {
+        res.redirect('/404')
+    }
 
-    await req.storage.edit(req.params.id, cube);
-    res.redirect('/')
 });
 
 
-router.get('/attach/:id', async (req, res) => {
-    const cube = await req.storage.getById(req.params.id);
+router.get('/attach/:cubeId', async (req, res) => {
+    const cube = await req.storage.getById(req.params.cubeId);
     const accessories = await req.storage.getAllAccessories((cube.accessories || []).map(a => a._id));
     res.render('attach', {
         title: 'Attach Stickers',
@@ -87,7 +91,7 @@ router.get('/attach/:id', async (req, res) => {
     });
 });
 
-router.post('attach/:id', async (req, res) => {
+router.post('attach/:cubeId', async (req, res) => {
     const cubeId = req.params.cubeId;
     const stickerId = req.body.accessory;
 

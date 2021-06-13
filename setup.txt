@@ -8,5 +8,5 @@
 
 ## Languages
 * Javascript, HTML, CSS
-* Express, express-handlebars, uniqid, body-parser
+* Express, express-handlebars, uniqid, body-parser, bcrypt, cookie-parser, mongoose
 * GitHub
